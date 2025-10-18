@@ -1,0 +1,4 @@
+# Here are some common files and directories to ignore in a Python project
+.env
+venv
+__pycache__/
