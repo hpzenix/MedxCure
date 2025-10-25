@@ -5,14 +5,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy(app)
 
 
-# ----- ADMIN -----
-class Admin(db.Model):
-    __tablename__ = 'admin'
+# ----- USERS -----
+class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False, unique=True)
     passhash = db.Column(db.String(256), nullable=False)
     email_id = db.Column(db.String(100), nullable=False, unique=True)
+    role = db.Column(db.String(20), nullable=False, default='admin')  # admin/doctor/patient
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    
+    # Relationship: 
+    doctor = db.relationship('Doctor', backref='user', uselist=False)
+    patient = db.relationship('Patient', backref='user', uselist=False)
 
 
 
@@ -22,9 +27,6 @@ class Doctor(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    email_id = db.Column(db.String(100), nullable=False, unique=True)
-    username = db.Column(db.String(64), nullable=False, unique=True)
-    passhash = db.Column(db.String(256), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     dob = db.Column(db.Date, nullable=False)
     mobile_number = db.Column(db.String(15), nullable=False, unique=True)
@@ -34,13 +36,13 @@ class Doctor(db.Model):
     status = db.Column(db.String(20), nullable=False, default='active')  # active/inactive/blacklisted
 
     # Relationship
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'), nullable=False)
 
     # A doctor has many availabilities and appointments
     availabilities = db.relationship('DoctorAvailability', backref='doctor', lazy=True)
     appointments = db.relationship('Appointment', backref='doctor', lazy=True)
 
-    
     
     
 # ----- DOCTOR AVAILABILITY -----
@@ -72,15 +74,13 @@ class Department(db.Model):
     appointments = db.relationship('Appointment', backref='department', lazy=True)
 
 
+
 # ----- PATIENTS -----
 class Patient(db.Model):
     __tablename__ = 'patients'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    email_id = db.Column(db.String(100), nullable=False, unique=True)
-    username = db.Column(db.String(64), nullable=False, unique=True)
-    passhash = db.Column(db.String(256), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     height_cm = db.Column(db.Float, nullable=False)
     weight_kg = db.Column(db.Float, nullable=False)
@@ -92,7 +92,9 @@ class Patient(db.Model):
     status = db.Column(db.String(20), nullable=False, default='active')  # active/blacklisted
 
     # Relationship: one patient has many appointments
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
     appointments = db.relationship('Appointment', backref='patient', lazy=True)
+
 
 
 # ----- APPOINTMENTS -----
@@ -112,6 +114,7 @@ class Appointment(db.Model):
     treatment = db.relationship('Treatment', backref='appointment', uselist=False)
 
 
+
 # ----- TREATMENTS -----
 class Treatment(db.Model):
     __tablename__ = 'treatments'
@@ -124,19 +127,21 @@ class Treatment(db.Model):
     follow_up_date = db.Column(db.Date, nullable=True)
 
 
+
 # ----- INITIAL SETUP -----
 with app.app_context():
     db.create_all()
 
     # Create a default admin if not exists
-    admin = Admin.query.filter_by(is_admin=True).first()
+    admin = User.query.filter_by(is_admin=True).first()
     if not admin:
         password_hash = generate_password_hash('master@admin10')
-        admin = Admin(
+        admin = User(
             username='masteradmin',
             email_id='masteradmin@example.com',
             passhash=password_hash,
-            is_admin=True
+            is_admin=True,
+            role='admin'
         )
         db.session.add(admin)
         db.session.commit()
