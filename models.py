@@ -12,12 +12,33 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False, unique=True)
     passhash = db.Column(db.String(256), nullable=False)
     email_id = db.Column(db.String(100), nullable=False, unique=True)
-    role = db.Column(db.String(20), nullable=False, default='admin')  # admin/doctor/patient
-    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    role = db.Column(db.String(20), nullable=False, default='ADMIN')  # ADMIN/DOCTOR/PATIENT
     
     # Relationship: 
     doctor = db.relationship('Doctor', backref='user', uselist=False)
     patient = db.relationship('Patient', backref='user', uselist=False)
+
+
+
+# ----- PATIENTS -----
+class Patient(db.Model):
+    __tablename__ = 'patients'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    height = db.Column(db.Float, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    dob = db.Column(db.Date, nullable=False)
+    mobile_number = db.Column(db.String(15), nullable=False)
+    blood_group = db.Column(db.String(5), nullable=False)
+    allergies = db.Column(db.String(256), nullable=True)
+    medical_history = db.Column(db.Text, nullable=True)
+    status = db.Column(db.String(20), nullable=False, default='active')  # active/blacklisted
+
+    # Relationship: one patient has many appointments
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
+    appointments = db.relationship('Appointment', backref='patient', lazy=True)
 
 
 
@@ -75,28 +96,6 @@ class Department(db.Model):
 
 
 
-# ----- PATIENTS -----
-class Patient(db.Model):
-    __tablename__ = 'patients'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    height_cm = db.Column(db.Float, nullable=False)
-    weight_kg = db.Column(db.Float, nullable=False)
-    dob = db.Column(db.Date, nullable=False)
-    mobile_number = db.Column(db.String(15), nullable=False, unique=True)
-    blood_group = db.Column(db.String(5), nullable=False)
-    allergies = db.Column(db.String(256), nullable=True)
-    medical_history = db.Column(db.Text, nullable=True)
-    status = db.Column(db.String(20), nullable=False, default='active')  # active/blacklisted
-
-    # Relationship: one patient has many appointments
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
-    appointments = db.relationship('Appointment', backref='patient', lazy=True)
-
-
-
 # ----- APPOINTMENTS -----
 class Appointment(db.Model):
     __tablename__ = 'appointments'
@@ -133,15 +132,14 @@ with app.app_context():
     db.create_all()
 
     # Create a default admin if not exists
-    admin = User.query.filter_by(is_admin=True).first()
+    admin = User.query.filter_by(role='ADMIN').first()
     if not admin:
         password_hash = generate_password_hash('master@admin10')
         admin = User(
             username='masteradmin',
             email_id='masteradmin@example.com',
             passhash=password_hash,
-            is_admin=True,
-            role='admin'
+            role='ADMIN'
         )
         db.session.add(admin)
         db.session.commit()
