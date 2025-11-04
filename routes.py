@@ -86,5 +86,24 @@ def signup_post():
     return redirect(url_for('login'))
 
 
-
+# dashboard
+@app.route('/dashboard')
+def dashboard():
+    if 'id' not in session:
+        flash('Please log in to continue', 'warning')
+        return redirect(url_for('login'))
+    
+    role = session.get('role')
+    
+    if role == 'ADMIN':
+        return render_template('admin/admin_dash.html')
+    elif role == 'PATIENT':
+        patient = Patient.query.filter_by(user_id=session['id']).first()
+        return render_template('patient/patient_dash.html', patient=patient)
+    elif role == 'DOCTOR':
+        doctor = Doctor.query.filter_by(user_id=session['id']).first()
+        return render_template('doctor/doctor_dash.html', doctor=doctor)
+    else:
+        flash('Invalid role', 'danger')
+        return redirect(url_for('login'))
     
