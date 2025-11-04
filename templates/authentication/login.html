@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+MEDxCure - Login Page
+{% endblock %}
+
+{% block content %}
+
+<div class="row g-0" style="font-family: 'Open Sans', sans-serif;">
+
+    <div style="background-image: url('{{ url_for('static', filename='images/login.jpg') }}'); background-size: cover; background-position: center;"
+        class="vh-100">
+
+        <a href="{{ url_for('homepage') }}" class="bi bi-arrow-left-circle-fill fs-1 mx-3 text-black"></a>    
+        
+        {% include 'flash_message.html' %}
+        
+        <div style="background-color: #ffffff; "
+        class="col-md-4 vh-75 d-flex flex-column align-items-center p-5 shadow-lg rounded-4 position-absolute top-50 start-50 translate-middle">      
+    
+            <div class="d-flex justify-content-center align-items-center rounded-3 mb-4 px-4 pb-0 pt-3"
+                style="background-color: #24ca85ff;">
+                <div>
+                    <p class="fs-4 fw-bold text-white mb-3">Login to MEDxCure</p>
+                </div>
+            </div>
+
+            <div class="w-100 px-4 rounded">
+                <form action="" class="form" method="post">
+
+                    <div class="mb-3">
+                        <label for="email_id" class="form-label fw-bold fs-5 m-1">Email</label>
+                        <input type="email" name="email_id" style="background-color: #defefeff; height: 4vh; border : 2px solid #aaaaaaff;"
+                            class="form-control rounded-pill px-3 py-1 fs-6 fw-medium" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold fs-5 m-1">Password</label>
+                        <input type="password" name="password" style="background-color: #defefeff; height: 4vh; border : 2px solid #aaaaaaff;"
+                            class="form-control rounded-pill px-3 py-1 fs-6 fw-medium" required>
+                    </div>
+
+                    <div class="justify-content-center d-flex align-items-center p-1">
+                        <button type="submit" class="btn btn-dark rounded-pill fw-bold fs-6 px-4 mt-2">Login</button>
+                    </div>
+
+                </form>
+
+                <p class="d-flex align-items-center justify-content-center fw-bold fs-6">Don't have an account? &nbsp; <a
+                        href="{{ url_for('signup') }}">Sign Up</a></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

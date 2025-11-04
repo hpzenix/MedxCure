@@ -13,8 +13,8 @@ MEDxCure - Home Page
         <div class="container-fluid">
             <a class="navbar-brand ms-2" href="">MEDxCure</a>
             <div class="ms-auto">
-                <a href="" class="btn btn-outline-light rounded-pill px-4 fw-bold" style="font: Open Sans;">Login</a>
-                <a href="" class="btn btn-light rounded-pill px-4 ms-2 fw-bold" style="font: Open Sans;">Sign Up</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light rounded-pill px-4 fw-bold" style="font: Open Sans;">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-light rounded-pill px-4 ms-2 fw-bold" style="font: Open Sans;">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -22,7 +22,7 @@ MEDxCure - Home Page
     <!-- Main Content -->
     <div class="d-flex flex-column justify-content-center align-items-start text-white text-center m-3 p-3 position-relative">
 
-
+        {% include 'flash_message.html' %}
         
         <p class="d-inline text-dark px-3 mx-4 fw-bold" style="font-size: 4rem;">MEDxCure</p>
         <p class="d-inline text-dark px-3 mx-4 fw-bold" style="font-size: 3rem;">Welcomes You !!</p>
