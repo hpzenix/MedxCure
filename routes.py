@@ -57,7 +57,7 @@ def signup_post():
     medical_history = request.form.get('medical_history')
     allergies = request.form.get('allergies')
     
-    if not name or not username or not password or not confirm_password or not email_id or not mobile_number or not gender or not dob or not blood_group or not height or not weight or not medical_history or not allergies:
+    if not name or not username or not password or not confirm_password or not email_id or not mobile_number or not gender or not dob or not blood_group or not height or not weight:
         return redirect(url_for('signup'))
     
     if password != confirm_password:
@@ -94,14 +94,15 @@ def dashboard():
         return redirect(url_for('login'))
     
     role = session.get('role')
+    user_id = session.get('id')
     
     if role == 'ADMIN':
         return render_template('admin/admin_dash.html')
     elif role == 'PATIENT':
-        patient = Patient.query.filter_by(user_id=session['id']).first()
+        patient = Patient.query.filter_by(user_id=user_id).first()
         return render_template('patient/patient_dash.html', patient=patient)
     elif role == 'DOCTOR':
-        doctor = Doctor.query.filter_by(user_id=session['id']).first()
+        doctor = Doctor.query.filter_by(user_id=user_id).first()
         return render_template('doctor/doctor_dash.html', doctor=doctor)
     else:
         flash('Invalid role', 'danger')
