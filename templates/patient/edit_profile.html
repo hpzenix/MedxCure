@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column vh-100" style="background-color: #f6f6f6ff;">
+
+    {% include 'patient/patient_nav.html' %}
+
+    <div class="d-flex justify-content-center align-items-center pt-3 position-relative">
+        {% include 'flash_message.html' %}
+        <div class="shadow-sm rounded-4 py-3 px-5" style="border: 1px solid #dee2e6; background-color: #b3d3f8ff;">
+            <p class="fs-3 fw-medium text-dark m-0">Edit Profile</p>
+        </div>
+    </div>
+
+    <form action="" method="POST">
+        <div class="container my-4">
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <div class="bg-light shadow rounded-4 p-4 text-center mt-1">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        
+                        <h4 class="my-3">{{ patient.name }}</h4>
+                        <p class="text-muted mb-0">@{{ patient.user.username }}</p>
+                        <p class="text-muted mb-4">{{ patient.user.email_id }}</p>
+
+                        <div class="d-flex justify-content-center mb-2">
+                            <a href="{{ url_for('profile') }}" class="btn btn-dark rounded-pill px-3">Cancel</a>
+                            <a href="{{ url_for('change_password') }}" class="btn btn-outline-danger rounded-pill ms-2">Change Password</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class=" shadow rounded-4 px-5 py-4">
+
+                        <div class="row">
+                            
+                            <div class="col-md-6 px-3">
+                                <h5 class="fw-bold mb-3">Personal Details</h5>
+                                
+                                <div class="mb-2">
+                                    <label for="name" class="form-label fw-bold mb-1">Full Name:</label>
+                                    <input type="text" name="name" class="form-control py-1" value="{{ patient.name }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="dob" class="form-label fw-bold mb-1">Date of Birth:</label>
+                                    <input type="date" name="dob" class="form-control py-1" value="{{ patient.dob.strftime('%Y-%m-%d') }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="gender" class="form-label fw-bold mb-1">Gender:</label>
+                                    <select name="gender" class="form-select py-1">
+                                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="mobile_number" class="form-label fw-bold mb-1">Mobile:</label>
+                                    <input type="text" name="mobile_number" class="form-control py-1" value="{{ patient.mobile_number }}">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 px-3">
+                                <h5 class="fw-bold mb-3">Medical Vitals</h5>
+                                <div class="mb-2">
+                                    <label for="blood_group" class="form-label fw-bold mb-1">Blood Group:</label>
+                                    <select name="blood_group" class="form-select py-1">
+                                        <option value="A+" {% if patient.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                                        <option value="A-" {% if patient.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                                        <option value="B+" {% if patient.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                                        <option value="B-" {% if patient.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                                        <option value="AB+" {% if patient.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                                        <option value="AB-" {% if patient.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                                        <option value="O+" {% if patient.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                                        <option value="O-" {% if patient.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="height" class="form-label fw-bold mb-1">Height (cm):</label>
+                                    <input type="number" name="height" class="form-control py-1" value="{{ patient.height }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="weight" class="form-label fw-bold mb-1">Weight (kg):</label>
+                                    <input type="number" name="weight" class="form-control py-1" value="{{ patient.weight }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <h5 class="fw-bold mb-3">History & Allergies</h5>
+                        
+                        <div class="row row-cols-md-2">
+                            <div class="px-3">
+                                <label for="allergies" class="form-label fw-bold mb-1">Allergies:</label>
+                                <textarea name="allergies" class="form-control">{{ patient.allergies }}</textarea>
+                            </div>
+                            
+                            <div class="px-3">
+                                <label for="medical_history" class="form-label fw-bold mb-1">Medical History:</label>
+                                <textarea name="medical_history" class="form-control">{{ patient.medical_history }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary rounded-pill px-3 fs-5">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </form>
+</div> 
+{% endblock %}

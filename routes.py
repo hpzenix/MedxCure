@@ -108,3 +108,71 @@ def dashboard():
         flash('Invalid role', 'danger')
         return redirect(url_for('login'))
     
+    
+# Doctor & Patient Profile
+@app.route('/profile')
+def profile():
+    if 'id' not in session:
+        flash('Please log in to continue', 'warning')
+        return redirect(url_for('login'))
+    
+    role = session.get('role')
+    user_id = session.get('id')
+    
+    if role == 'PATIENT':
+        patient = Patient.query.filter_by(user_id=user_id).first()
+        return render_template('patient/patient_profile.html', patient=patient)
+    elif role == 'DOCTOR':
+        doctor = Doctor.query.filter_by(user_id=user_id).first()
+        return render_template('doctor/doctor_profile.html', doctor=doctor)
+    else:
+        flash('Admin has no profile page.', 'warning')
+        return redirect(url_for('dashboard'))
+    
+    
+# Edit Profile
+@app.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if 'id' not in session:
+        flash('Please log in to continue', 'warning')
+        return redirect(url_for('login'))
+    
+    role = session.get('role')
+    user_id = session.get('id')
+    
+    if role == 'PATIENT':
+        patient = Patient.query.filter_by(user_id=user_id).first()
+        if request.method == 'POST':
+            patient.name = request.form.get('name')
+            patient.gender = request.form.get('gender')
+            patient.dob = datetime.strptime(request.form.get('dob'), '%Y-%m-%d').date()
+            patient.mobile_number = request.form.get('mobile_number')
+            patient.blood_group = request.form.get('blood_group')
+            patient.height = float(request.form.get('height'))
+            patient.weight = float(request.form.get('weight'))
+            patient.medical_history = request.form.get('medical_history')
+            patient.allergies = request.form.get('allergies')
+            db.session.commit()
+            flash('Profile updated successfully.', 'success')
+            return redirect(url_for('profile'))
+        return render_template('patient/edit_profile.html', patient=patient)
+
+
+# Change Password
+@app.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if 'id' not in session:
+        flash('Please log in to continue', 'warning')
+        return redirect(url_for('login'))
+    
+    role = session.get('role')
+    user_id = session.get('id')
+    
+    if role == 'PATIENT':
+        patient = Patient.query.filter_by(user_id=user_id).first()
+        if request.method == 'POST':
+            patient.passhash = generate_password_hash(request.form.get('new_password'))
+            db.session.commit()
+            flash('Password updated successfully.', 'success')
+            return redirect(url_for('profile')) 
+        return render_template('patient/change_password.html', patient=patient) 

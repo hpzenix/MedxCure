@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column vh-100" style="background-color: #f6f6f6ff;">
+
+    {% include 'patient/patient_nav.html' %}
+
+    <div class="d-flex justify-content-center align-items-center mt-4 py-3 position-relative">
+        {% include 'flash_message.html' %}
+        <div class="shadow-sm rounded-4 pt-3 px-5" style="border: 1px solid #dee2e6; background-color: #b3d3f8ff;">
+            <p class="fs-3 fw-medium text-dark">Profile</p>
+        </div>
+    </div>
+
+
+    <div class="container my-4">
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="bg-light shadow rounded-4 p-4 text-center mb-4">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                        alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                    
+                    <h4 class="my-3">{{ patient.name }}</h4>
+                    
+                    <p class="text-muted mb-0">@{{ patient.user.username }}</p>
+                    <p class="text-muted mb-4">{{ patient.user.email_id }}</p>
+
+                    <div class="d-flex justify-content-center mb-2">
+                        <a href="{{ url_for('edit_profile') }}" class="btn btn-primary rounded-pill px-3">Edit Profile</a>
+                        <a href="{{ url_for('change_password') }}" class="btn btn-outline-danger rounded-pill ms-2">Change Password</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="bg-light shadow rounded-4 p-5">
+
+                    <div class="row g-md-5">
+                        
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-3">Personal Details</h5>
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Full Name:</strong>
+                                    <span>{{ patient.name }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Date of Birth:</strong>
+                                    <span>{{ patient.dob.strftime('%d %b %Y') }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Gender:</strong>
+                                    <span>{{ patient.gender }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Mobile:</strong>
+                                    <span>{{ patient.mobile_number }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-3">Medical Vitals</h5>
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Blood Group:</strong>
+                                    <span class="badge bg-danger rounded-pill fs-6">{{ patient.blood_group }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Height:</strong>
+                                    <span>{{ patient.height }} cm</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                                    <strong>Weight:</strong>
+                                    <span>{{ patient.weight }} kg</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div> <hr class="my-4">
+
+                    <h5 class="fw-bold mb-3">History & Allergies</h5>
+                    
+                    <strong>Allergies:</strong>
+                    <p class="text-muted">{{ patient.allergies or 'No allergies reported.' }}</p>
+                    
+                    <strong>Medical History:</strong>
+                    <p class="text-muted">{{ patient.medical_history or 'No medical history provided.' }}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
