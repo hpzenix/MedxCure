@@ -6,30 +6,44 @@ MEDxCure - Home Page
 
 {% block content %}
 
-<!-- Navigation Bar -->
-<div class="d-flex flex-column min-vh-100"
-    style="background-image: url('{{ url_for('static', filename='images/homepage.png') }}'); background-size: cover; background-position: center; width: 100%; height: 100vh;">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #13D4D4;">
+<div class="container-fluid d-flex flex-column min-vh-100 m-0 p-0"
+style="background-image: url('{{ url_for('static', filename='images/homepage.png') }}'); background-size: cover; background-position: center; width: 100%; height: 100vh;">
+    <!-- Navigation Bar --> 
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #00BFA6;">
         <div class="container-fluid">
-            <a class="navbar-brand ms-2" href="">MEDxCure</a>
-            <div class="ms-auto">
-                <a href="{{ url_for('login') }}" class="btn btn-outline-light rounded-pill px-4 fw-bold" style="font: Open Sans;">Login</a>
-                <a href="{{ url_for('signup') }}" class="btn btn-light rounded-pill px-4 ms-2 fw-bold" style="font: Open Sans;">Sign Up</a>
+            <a class="navbar-brand mx-5 fs-4 fw-medium" href="{{ url_for('homepage') }}">MEDxCure</a>
+            <div class="ms-auto me-2">
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light rounded-pill px-4 fw-bold fs-5" style="font: Open Sans;">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-light rounded-pill px-4 ms-2 fw-bold fs-5" style="font: Open Sans;">Sign Up</a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="d-flex flex-column justify-content-center align-items-start text-white text-center m-3 p-3 position-relative">
+    <div class="container my-5">
+        <div class="row align-items-center py-5">
+            {% include 'flash_message.html' %}
+            
+            <div class="col-lg-6">
+      
+                <h1 class="display-3 fw-bolder text-dark mb-3">
+                    Your Complete Health, All in One Place.
+                </h1>
 
-        {% include 'flash_message.html' %}
-        
-        <p class="d-inline text-dark px-3 mx-4 fw-bold" style="font-size: 4rem;">MEDxCure</p>
-        <p class="d-inline text-dark px-3 mx-4 fw-bold" style="font-size: 3rem;">Welcomes You !!</p>
-        <p class="d-inline text-dark px-3 py-1 mx-4 my-2" style="font-size: 2rem;">Your Health, Our Priority.</p>
-        <p class="d-inline text-dark px-3 py-1 mx-4 my-2" style="font-size: 2rem;">Your One-Stop Solution for All Medical Needs.</p>
-        <p class="d-inline text-dark px-3 py-1 mx-4 my-2" style="font-size: 2rem;">Manage. Monitor. Heal. All in One Place.</p>
+                <p class="fs-4 text-muted">
+                    Manage your appointments, monitor your health, and connect 
+                    with trusted doctors—all from one secure, easy-to-use platform.
+                </p>
+
+                <div class="d-flex gap-3 mt-4">
+                    
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg rounded-pill px-4 py-2" 
+                    style="background-color: #00BFA6; border: none;">
+                        Book an Appointment
+                    </a>
+
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
 {% endblock %}
