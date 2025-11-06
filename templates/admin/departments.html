@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex flex-column vh-100 m-0 p-0">
+
+    {% include 'admin/admin_nav.html' %} 
+    <div class="flex-grow-1 overflow-auto" style="background-color: #F8F9FA;">
+        
+        <div class="container-fluid px-5 py-4">
+            <h1 class="fw-bolder">Departments</h1>
+            <p class="fs-4 text-muted">Add, view, and manage all medical departments.</p>
+        </div>
+        
+        <div class="container-fluid px-5">
+            {% include 'flash_message.html' %} </div>
+
+        <div class="container-fluid px-5">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card shadow border-0 rounded-4">
+                        <div class="card-header bg-light rounded-top-4 py-3">
+                            <h5 class="mb-0 fw-bold">Add New Department</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form action="{{ url_for('add_department') }}" method="POST">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label fw-medium">Department Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label fw-medium">Description</label>
+                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">Save Department</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="card shadow border-0 rounded-4">
+                        <div class="card-header bg-light rounded-top-4 py-3">
+                            <h5 class="mb-0 fw-bold">All Departments</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" class="px-3">ID</th>
+                                        <th scope="col" class="px-3">Name</th>
+                                        <th scope="col" class="px-3">Description</th>
+                                        <th scope="col" class="px-3">No. of Doctors</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for dept in departments %}
+                                    <tr>
+                                        <td class="fw-bold px-3">{{ dept.id }}</td>
+                                        <td class="fw-medium px-3">{{ dept.name }}</td>
+                                        <td class="px-3">{{ (dept.description or 'N/A') }}</td>
+                                        <td class="text-center px-3">{{ dept.doctors_count }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endblock %}

@@ -12,7 +12,7 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False, unique=True)
     passhash = db.Column(db.String(256), nullable=False)
     email_id = db.Column(db.String(100), nullable=False, unique=True)
-    role = db.Column(db.String(20), nullable=False, default='ADMIN')  # ADMIN/DOCTOR/PATIENT
+    role = db.Column(db.String(20), nullable=False, default='ADMIN') 
     
     # Relationship: 
     doctor = db.relationship('Doctor', backref='user', uselist=False)
@@ -34,7 +34,7 @@ class Patient(db.Model):
     blood_group = db.Column(db.String(5), nullable=False)
     allergies = db.Column(db.String(256), nullable=True)
     medical_history = db.Column(db.Text, nullable=True)
-    status = db.Column(db.String(20), nullable=False, default='active')  # active/blacklisted
+    status = db.Column(db.String(20), nullable=False, default='active') 
 
     # Relationship: one patient has many appointments
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
@@ -52,9 +52,8 @@ class Doctor(db.Model):
     dob = db.Column(db.Date, nullable=False)
     mobile_number = db.Column(db.String(15), nullable=False, unique=True)
     qualification = db.Column(db.String(100), nullable=False)
-    specialization = db.Column(db.String(100), nullable=False)
     experience_years = db.Column(db.Integer, default=0)
-    status = db.Column(db.String(20), nullable=False, default='active')  # active/inactive/blacklisted
+    status = db.Column(db.String(20), nullable=False, default='active') 
 
     # Relationship
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
@@ -106,8 +105,8 @@ class Appointment(db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'), nullable=False)
     appointment_date = db.Column(db.DateTime, nullable=False)
     availability_id = db.Column(db.Integer, db.ForeignKey('doctor_availability.id'))
-    status = db.Column(db.String(20), nullable=False, default='Booked')  # Booked, Canceled, Completed
-    appointment_mode = db.Column(db.String(20), nullable=False)  # Online / In-person
+    status = db.Column(db.String(20), nullable=False, default='Booked')  
+    appointment_mode = db.Column(db.String(20), nullable=False)  
 
     # One appointment has one treatment
     treatment = db.relationship('Treatment', backref='appointment', uselist=False)

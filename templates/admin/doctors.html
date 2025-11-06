@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Doctors
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex flex-column vh-100 m-0 p-0">
+
+    {% include 'admin/admin_nav.html' %} 
+    
+    <div class="flex-grow-1 overflow-auto" style="background-color: #F8F9FA;">
+        
+        <div class="container-fluid px-5 py-4">
+            <h1 class="fw-bolder">Manage Doctors</h1>
+            <p class="fs-4 text-muted">Add, view, and manage all doctors.</p>
+        </div>
+        
+        <div class="container-fluid px-5">
+            {% include 'flash_message.html' %}
+        </div>
+
+        <div class="container-fluid px-5">
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="mb-3">
+                        <a href="{{ url_for('add_doctor') }}" class="btn btn-primary rounded-pill px-4">
+                            Add New Doctor
+                        </a>
+                    </div>
+
+                    <div class="card shadow border-0 rounded-4">
+                        <div class="card-header bg-light rounded-top-4 py-3">
+                            <h5 class="mb-0 fw-bold">All Doctors</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light text-center">
+                                        <tr>
+                                            <th class="">ID</th>
+                                            <th class="">Username</th>
+                                            <th class="">Name</th>
+                                            <th class="">Gender</th>
+                                            <th class="">DOB</th>
+                                            <th class="">Email</th>
+                                            <th class="">Mob No.</th>
+                                            <th class="">Qualification</th>
+                                            <th class="">Specialization</th>
+                                            <th class="">Exp (Yrs)</th>
+                                            <th class="">Status</th>
+                                            <th class="">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        {% for doc in doctors %}
+                                        <tr>
+                                            <td class="fw-bold">{{ doc.id }}</td>
+                                            <td class="fw-medium">{{ doc.username }}</td>
+                                            <td class="">Dr. {{ doc.name }}</td>
+                                            <td class="">{{ doc.gender | capitalize }}</td>
+                                            <td class="">{{ doc.dob }}</td>
+                                            <td class="">{{ doc.email_id }}</td>
+                                            <td class="">{{ doc.mobile_number }}</td>
+                                            <td class="">{{ doc.qualification }}</td>
+                                            <td class="">{{ doc.department_name }}</td>
+                                            <td class="text-center ">{{ doc.experience_years }}</td>
+                                            
+                                            <td style="min-width: 180px;">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ url_for('add_doctor', id=doc.id, status='ACTIVE') }}" 
+                                                       class="btn {% if doc.status == 'ACTIVE' %}btn-success{% else %}btn-outline-success{% endif %}">
+                                                        Active
+                                                    </a>
+                                                    <a href="{{ url_for('add_doctor', id=doc.id, status='BLACKLISTED') }}" 
+                                                       class="btn {% if doc.status == 'BLACKLISTED' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                                                        Blacklist
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                            <td style="min-width: 120px;">
+                                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Edit</a>
+                                                <a href="#" class="btn btn-sm btn-outline-danger rounded-pill">Delete</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+</div>
+{% endblock %}
