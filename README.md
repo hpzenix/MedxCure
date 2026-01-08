@@ -1,4 +1,4 @@
-🏥** Hospital Management System (Flask + PostgreSQL)**
+🏥** MedxCure**
 
 This project is a **role-based hospital management web application** built using **Flask, Jinja, and PostgreSQL**, aimed at simplifying hospital operations through digital automation.
 It provides separate dashboards and features for **Admins**, **Doctors**, and **Patients**, ensuring secure and efficient workflow management.
@@ -19,4 +19,5 @@ The application enforces **role-based authentication**, prevents double bookings
 * **Frontend:** Jinja2 Templates, HTML, CSS
 * **Database:** PostgreSQL with SQLAlchemy ORM
 * **Authentication:** Role-based access (Admin, Doctor, Patient)
+
 
